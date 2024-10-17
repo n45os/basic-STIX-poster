@@ -10,7 +10,7 @@ This script demonstrates how to create STIX objects and post them to a TAXII 2.1
 ## Prerequisites
 
 - **Python 3.6+**
-- **TAXII 2.1 Server**: An accessible TAXII server instance (e.g., [OpenTAXII](https://github.com/OpenTAXII/OpenTAXII))
+- **TAXII 2.1 Server**: An accessible TAXII server instance (e.g., [OpenTAXII](https://github.com/eclecticiq/OpenTAXII)).
 
 ## Setup
 
