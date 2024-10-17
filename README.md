@@ -17,8 +17,8 @@ This script demonstrates how to create STIX objects and post them to a TAXII 2.1
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo 
+   git clone https://github.com/n45os/basic-STIX-poster.git
+   cd basic-STIX-poster 
    ```
 
 2. **Install Dependencies (recommended to run it in a python venv)**
