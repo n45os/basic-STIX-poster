@@ -7,6 +7,9 @@ from stix2 import (
     Bundle,
     IPv4Address,
     URL,
+    Relationship,
+    DomainName,
+    File,  
     TLP_WHITE,
     TLP_AMBER,
     TLP_RED,
@@ -23,6 +26,13 @@ TAXII_SERVER = os.getenv("TAXII_SERVER")
 COLLECTION_ALIAS = os.getenv("COLLECTION_ALIAS")
 USERNAME = os.getenv("USERNAME", "admin")
 PASSWORD = os.getenv("PASSWORD", "admin")
+
+print("TAXII Server Configuration:")
+print(f"TAXII Server: {TAXII_SERVER}")
+print(f"Collection Alias: {COLLECTION_ALIAS}")
+print(f"Username: {USERNAME}")
+print(f"Password: {PASSWORD}")
+print("----------------")   
 
 print(f"Posting to TAXII server at: {TAXII_SERVER}")
 
@@ -42,7 +52,7 @@ url = URL(
 )
 
 # Create an Indicator object for the malicious IP with TLP marking
-ip_indicator = Indicator(
+ip_indicator: Indicator = Indicator(
     name="Malicious IP 2",
     description="This IP is malicious",
     labels=["malicious-activity"],
@@ -51,6 +61,32 @@ ip_indicator = Indicator(
     confidence=80,
     object_marking_refs=tlp_marking
 )
+
+url_indicator : Indicator = Indicator(
+    name="Malicious URL",
+    description="This URL is malicious",
+    labels=["malicious-activity"],
+    pattern="[url:value = 'http://example.com']",
+    pattern_type="stix",
+    confidence=80,
+    object_marking_refs=tlp_marking
+)
+
+# file
+file = File(
+    name='malware.exe',
+    hashes={
+        'SHA-256': 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6b'
+    },
+    object_marking_refs=tlp_marking
+)
+
+# Create relation between the indicators
+# relationship = Relationship(source_ref=ip_indicator.id, target_ref=url_indicator.id, relationship_type="related-to")
+
+# Create a relationship between the IP and URL indicators
+relationship = Relationship(source_ref=url, target_ref=ip_v4, relationship_type="resolved-to")
+
 
 # Print the serialized STIX objects for verification
 print("IP object:\n----------------")
@@ -62,8 +98,15 @@ print(ip_indicator.serialize(pretty=True))
 print("URL object:\n----------------")
 print(url.serialize(pretty=True))
 
+print("Relationship:\n----------------")
+print(relationship.serialize(pretty=True))
+
 # Create a Bundle object and add the STIX objects to it
-bundle = Bundle(objects=[ip_v4, url, tlp_marking])
+# bundle = Bundle(objects=[tlp_marking, ip_indicator, url_indicator, relationship])
+bundle = Bundle(objects=[ip_v4, url, tlp_marking, relationship])
+
+file_bundle = Bundle(objects=[file, tlp_marking])
+
 
 # Connect to the TAXII server using provided credentials
 server = Server(
@@ -92,11 +135,17 @@ if collection_to_post is None:
 
 # Serialize the bundle to a JSON-formatted string
 serialized_bundle = bundle.serialize(pretty=True)
-print("Serialized Bundle:\n----------------")
-print(serialized_bundle)
+serialized_file_bundle = file_bundle.serialize(pretty=True)
+# print("Serialized Bundle:\n----------------")
+# print(serialized_bundle)
 
+print("Serialized File Bundle:\n----------------")
+print(serialized_file_bundle)
+
+print("Posting the bundle to the TAXII collection...")
 # Post the bundle to the TAXII collection
-response = collection_to_post.add_objects(serialized_bundle)
+# response = collection_to_post.add_objects(serialized_bundle)
+response = collection_to_post.add_objects(serialized_file_bundle)
 print("Response Status from TAXII Server:")
 print(response.status)
 print()
