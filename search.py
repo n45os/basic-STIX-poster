@@ -13,7 +13,7 @@ base_url = "http://localhost:5001/search"
 
 params = {
     "type": "hashes",
-    "value": "ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6b",
+    "value": "ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6f",
     "collection_id": "internal-cti-collection"  # optional, can be omitted
 }
 

@@ -41,7 +41,7 @@ tlp_marking = TLP_WHITE
 
 # Create an IPv4 address object with TLP marking
 ip_v4 = IPv4Address(
-    value='1.1.1.4',
+    value='1.1.1.200',
     object_marking_refs=tlp_marking
 )
 
@@ -76,7 +76,7 @@ url_indicator : Indicator = Indicator(
 file = File(
     name='malware.exe',
     hashes={
-        'SHA-256': 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6b'
+        'SHA-256': 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6f'
     },
     object_marking_refs=tlp_marking
 )
