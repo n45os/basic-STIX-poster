@@ -7,6 +7,7 @@ def main():
     parser.add_argument('-t', '--type', required=True, help='Type of the object (e.g., "url", "hashes")')
     parser.add_argument('-v', '--value', required=False, help='Value to search for (e.g., "example.com")')
     parser.add_argument('-c', '--collection-id', default='internal-cti-collection', help='Collection ID (optional)')
+    parser.add_argument('-r', '--get-related', required=False, default=True, help='Get related objects (relationships and marking defs) (optional)')
     
     parser.add_argument('-u', '--url', default='http://localhost:80', help='URL of the API endpoint')
 
@@ -19,13 +20,15 @@ def main():
     if args.value is None:
         params = {
             "type": args.type,
-            "collection_id": args.collection_id  # optional, can be omitted
+            "collection_id": args.collection_id,  # optional, can be omitted
+            "get_related": args.get_related
         }
     else:
         params = {
             "type": args.type,
             "value": args.value,
-            "collection_id": args.collection_id  # optional, can be omitted
+            "collection_id": args.collection_id,  # optional, can be omitted
+            "get_related": args.get_related
         }
 
     # Make the GET request to the /search endpoint
