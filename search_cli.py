@@ -5,7 +5,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description='Search STIX objects via API.')
     parser.add_argument('-t', '--type', required=True, help='Type of the object (e.g., "url", "hashes")')
-    parser.add_argument('-v', '--value', required=True, help='Value to search for (e.g., "example.com")')
+    parser.add_argument('-v', '--value', required=False, help='Value to search for (e.g., "example.com")')
     parser.add_argument('-c', '--collection-id', default='internal-cti-collection', help='Collection ID (optional)')
     
     parser.add_argument('-u', '--url', default='http://localhost:80', help='URL of the API endpoint')
@@ -16,11 +16,17 @@ def main():
     base_url = f"{args.url}/search"
 
     # Define the query parameters
-    params = {
-        "type": args.type,
-        "value": args.value,
-        "collection_id": args.collection_id  # optional, can be omitted
-    }
+    if args.value is None:
+        params = {
+            "type": args.type,
+            "collection_id": args.collection_id  # optional, can be omitted
+        }
+    else:
+        params = {
+            "type": args.type,
+            "value": args.value,
+            "collection_id": args.collection_id  # optional, can be omitted
+        }
 
     # Make the GET request to the /search endpoint
     response = requests.get(base_url, params=params, headers={"accept": "application/json"})
