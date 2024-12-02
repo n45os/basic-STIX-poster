@@ -17,19 +17,16 @@ def main():
     base_url = f"{args.url}/search"
 
     # Define the query parameters
-    if args.value is None:
-        params = {
-            "type": args.type,
-            "collection_id": args.collection_id,  # optional, can be omitted
-            "get_related": args.get_related
-        }
-    else:
-        params = {
-            "type": args.type,
-            "value": args.value,
-            "collection_id": args.collection_id,  # optional, can be omitted
-            "get_related": args.get_related
-        }
+    params = {
+        "type": args.type,
+        "collection_id": args.collection_id  # optional, can be omitted
+    }
+
+    if args.value is not None:
+        params["value"] = args.value
+
+    if args.get_related is not None:
+        params["get_related"] = args.get_related
 
     # Make the GET request to the /search endpoint
     response = requests.get(base_url, params=params, headers={"accept": "application/json"})
