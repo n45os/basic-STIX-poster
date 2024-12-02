@@ -7,8 +7,8 @@ def main():
     parser.add_argument('-t', '--type', required=True, help='Type of the object (e.g., "url", "hashes")')
     parser.add_argument('-v', '--value', required=False, help='Value to search for (e.g., "example.com")')
     parser.add_argument('-c', '--collection-id', default='internal-cti-collection', help='Collection ID (optional)')
-    parser.add_argument('-r', '--get-related', required=False, default=True, help='Get related objects (relationships and marking defs) (optional)')
-    parser.add_argument('-m', '--only-markings', required=False, default=False, help='Only return marking definitions (optional)')
+    parser.add_argument('-r', '--get-related', required=False, help='Get related objects (relationships and marking defs) (optional)')
+    parser.add_argument('-m', '--only-markings', required=False, help='Only return marking definitions (optional)')
     
     parser.add_argument('-u', '--url', default='http://localhost:80', help='URL of the API endpoint')
 
@@ -26,7 +26,7 @@ def main():
     if args.value is not None:
         params["value"] = args.value
 
-    if args.get_related is not None:
+    if 'get_related' in args:
         params["get_related"] = args.get_related
 
     if args.only_markings:
